@@ -1,0 +1,10 @@
+.text
+main:
+	li $t0, 1
+
+inc:	add $t0, $t0, 1
+	nop
+	nop
+	nop
+	beq $t0, 995, main
+	j inc

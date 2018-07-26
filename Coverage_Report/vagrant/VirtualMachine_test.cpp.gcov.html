@@ -1,0 +1,757 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Coverage.combined.cleaned - /vagrant/VirtualMachine_test.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">vagrant</a> - VirtualMachine_test.cpp<span style="font-size: 80%;"> (source / <a href="VirtualMachine_test.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Coverage.combined.cleaned</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">556</td>
+            <td class="headerCovTableEntry">556</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-04-27 00:44:18</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #include &quot;test_config.hpp&quot;</a>
+<span class="lineNum">       2 </span>            : #include &quot;catch.hpp&quot;
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : #include &quot;VirtualMachine.hpp&quot;
+<span class="lineNum">       5 </span>            : #include &quot;Parser.hpp&quot;
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span>            : #include &lt;string&gt;
+<span class="lineNum">       8 </span>            : #include &lt;sstream&gt;
+<span class="lineNum">       9 </span>            : #include &lt;iostream&gt;
+<a name="10"><span class="lineNum">      10 </span>            : #include &lt;fstream&gt;</a>
+<span class="lineNum">      11 </span>            : #include &lt;iomanip&gt;
+<span class="lineNum">      12 </span><span class="lineCov">         18 : TEST_CASE(&quot;VM&quot;, &quot;[Virtual Machine]&quot;) {</span>
+<span class="lineNum">      13 </span>            :         {
+<span class="lineNum">      14 </span>            :                 //0
+<span class="lineNum">      15 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">      16 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">      17 </span><span class="lineCov">         18 :                 std::string file = &quot;# simple infinite loop \n      .data\n .text\nmain: j main\n&quot;;</span>
+<span class="lineNum">      18 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(file) == true);</span>
+<span class="lineNum">      19 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">      20 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">      21 </span><span class="lineCov">          9 :                 vm-&gt;step();</span>
+<span class="lineNum">      22 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">      23 </span><span class="lineCov">          9 :                 vm-&gt;step();</span>
+<span class="lineNum">      24 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">      25 </span><span class="lineCov">          9 :                 vm-&gt;step();</span>
+<span class="lineNum">      26 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">      27 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t2&quot;)) == 0);</span>
+<span class="lineNum">      28 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$8&quot;)) == 0);</span>
+<span class="lineNum">      29 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$hi&quot;)) == 0);</span>
+<span class="lineNum">      30 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$lo&quot;)) == 0);</span>
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span><span class="lineCov">          9 :                 vm-&gt;error_occured(&quot;some error happened&quot;);</span>
+<span class="lineNum">      33 </span><span class="lineCov">          9 :                 file = vm-&gt;status();</span>
+<span class="lineNum">      34 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$234&quot;)) == 9999);</span>
+<span class="lineNum">      35 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(24823049)) == 9999);</span>
+<span class="lineNum">      36 </span><span class="lineCov">         18 :                 std::string temp = &quot;something&quot;;</span>
+<span class="lineNum">      37 </span><span class="lineCov">          9 :                 char t = 'a';</span>
+<span class="lineNum">      38 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;contains(temp, t)) == false);</span>
+<span class="lineNum">      39 </span><span class="lineCov">          9 :                 vm-&gt;store_le(43);</span>
+<span class="lineNum">      40 </span><span class="lineCov">          9 :                 vm-&gt;error_occured(temp);</span>
+<span class="lineNum">      41 </span><span class="lineCov">          9 :                 vm-&gt;declarations(32);</span>
+<span class="lineNum">      42 </span><span class="lineCov">          9 :                 vm-&gt;setMem(3);</span>
+<span class="lineNum">      43 </span><span class="lineCov">          9 :                 vm-&gt;read(&quot;$2&quot;);</span>
+<span class="lineNum">      44 </span><span class="lineCov">          9 :                 vm-&gt;read(&quot;LABEL&quot;);</span>
+<span class="lineNum">      45 </span><span class="lineCov">          9 :                 vm-&gt;read(&quot;4($3)&quot;);</span>
+<span class="lineNum">      46 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(temp);</span>
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :         }
+<span class="lineNum">      49 </span>            :         {
+<span class="lineNum">      50 </span>            :                 //1
+<span class="lineNum">      51 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">      52 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">      53 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\n        .space 8\nvar1: .word 1\nvar2: .word -2\n.text\n main:\nla $t0, var1\nlw $t1, 0\nlw $t2, $t0\nlw $t3, 4($t0)\nlw $t4, 4(var1)\nlw $t5, var2\n&quot;;</span>
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">      56 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">      57 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">      60 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(8)) == 0x01);</span>
+<span class="lineNum">      61 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(9)) == 0x00);</span>
+<span class="lineNum">      62 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(12)) == 0xfe);</span>
+<span class="lineNum">      63 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(13)) == 0xff);</span>
+<span class="lineNum">      64 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(14)) == 0xff);</span>
+<span class="lineNum">      65 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(15)) == 0xff);</span>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineCov">          9 :                 vm-&gt;step();</span>
+<span class="lineNum">      68 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 1);</span>
+<span class="lineNum">      69 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t0&quot;)) == 8);</span>
+<span class="lineNum">      70 </span><span class="lineCov">          9 :                 vm-&gt;step();</span>
+<span class="lineNum">      71 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t1&quot;)) == 0);</span>
+<span class="lineNum">      72 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 2);</span>
+<span class="lineNum">      73 </span><span class="lineCov">          9 :                 vm-&gt;step();</span>
+<span class="lineNum">      74 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t2&quot;)) == 1);</span>
+<span class="lineNum">      75 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 3);</span>
+<span class="lineNum">      76 </span><span class="lineCov">          9 :                 vm-&gt;step();</span>
+<span class="lineNum">      77 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t3&quot;)) == 0xfffffffe);</span>
+<span class="lineNum">      78 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 4);</span>
+<span class="lineNum">      79 </span><span class="lineCov">          9 :                 vm-&gt;step();</span>
+<span class="lineNum">      80 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t4&quot;)) == 0xfffffffe);</span>
+<span class="lineNum">      81 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 5);</span>
+<span class="lineNum">      82 </span><span class="lineCov">          9 :                 vm-&gt;step();</span>
+<span class="lineNum">      83 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t5&quot;)) == 0xfffffffe);</span>
+<span class="lineNum">      84 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 6);</span>
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :         }
+<span class="lineNum">      87 </span>            :         {
+<span class="lineNum">      88 </span>            :                 //2
+<span class="lineNum">      89 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">      90 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">      91 </span><span class="lineCov">         18 :                 std::string file = &quot;.data\nr1:     .space 4\n r2: .space 12\n r3: .space 4\n var: .word 7\n.text\n main:\n la $t0, r2\n lw $t1, var\n sw $t1, 0\n sw $t1, $t0\nsw $t1, 4($t0)\nsw $t1, 8(r2)\nsw $t1, r3\n&quot;;</span>
+<span class="lineNum">      92 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(file) == true);</span>
+<span class="lineNum">      93 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">      94 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">      95 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">      96 </span><span class="lineCov">          9 :                 REQUIRE(vm-&gt;status() == &quot;&quot;);</span>
+<span class="lineNum">      97 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">      98 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t0&quot;)) == 4);</span>
+<span class="lineNum">      99 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     100 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t1&quot;)) == 7);</span>
+<span class="lineNum">     101 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     102 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(0)) == 7);</span>
+<span class="lineNum">     103 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(1)) == 0);</span>
+<span class="lineNum">     104 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(2)) == 0);</span>
+<span class="lineNum">     105 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(3)) == 0);</span>
+<span class="lineNum">     106 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     107 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(4)) == 7);</span>
+<span class="lineNum">     108 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 5);</span>
+<span class="lineNum">     109 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(8)) == 7);</span>
+<span class="lineNum">     110 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 6);</span>
+<span class="lineNum">     111 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(12)) == 7);</span>
+<span class="lineNum">     112 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 7);</span>
+<span class="lineNum">     113 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(16)) == 7);</span>
+<span class="lineNum">     114 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_add(17)) == 0);</span>
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span>            :         }
+<span class="lineNum">     117 </span>            :         {
+<span class="lineNum">     118 </span>            :                 //3
+<span class="lineNum">     119 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     120 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     121 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nA = 0\nB = 1\nC = 2\nD = 4\n.text\nmain:\nli $t0, 100\nli $t1, A\nli $t2, B\n   li $t3, C\nli $t4, D&quot;;</span>
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     124 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     125 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     126 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     127 </span><span class="lineCov">          9 :                 REQUIRE(vm-&gt;status() == &quot;&quot;);</span>
+<span class="lineNum">     128 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     129 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t0&quot;)) == 100);</span>
+<span class="lineNum">     130 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     131 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t1&quot;)) == 0);</span>
+<span class="lineNum">     132 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     133 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t2&quot;)) == 1);</span>
+<span class="lineNum">     134 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     135 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t3&quot;)) == 2);</span>
+<span class="lineNum">     136 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 5);</span>
+<span class="lineNum">     137 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t4&quot;)) == 4);</span>
+<span class="lineNum">     138 </span>            :         }
+<span class="lineNum">     139 </span>            :         {
+<span class="lineNum">     140 </span>            :                 //4
+<span class="lineNum">     141 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     142 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     143 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nVALUE = -1234\n.text\nmain:\nli $t0, VALUE\nmove $t1, $t0\nmove $t2, $t1\nmove $t3, $t2\n       move $t4, $t3\n move $t5, $t4\n move $t6, $t5\n move $t7, $t6&quot;;</span>
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     146 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     147 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     148 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     149 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     150 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t0&quot;)) == 4294966062);</span>
+<span class="lineNum">     151 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     152 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t1&quot;)) == 4294966062);</span>
+<span class="lineNum">     153 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     154 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t2&quot;)) == 4294966062);</span>
+<span class="lineNum">     155 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     156 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t3&quot;)) == 4294966062);</span>
+<span class="lineNum">     157 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 5);</span>
+<span class="lineNum">     158 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t4&quot;)) == 4294966062);</span>
+<span class="lineNum">     159 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 6);</span>
+<span class="lineNum">     160 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t5&quot;)) == 4294966062);</span>
+<span class="lineNum">     161 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 7);</span>
+<span class="lineNum">     162 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t6&quot;)) == 4294966062);</span>
+<span class="lineNum">     163 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 8);</span>
+<span class="lineNum">     164 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t7&quot;)) == 4294966062);</span>
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :         }
+<span class="lineNum">     167 </span>            :         {
+<span class="lineNum">     168 </span>            :                 //5
+<span class="lineNum">     169 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     170 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     171 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nVALUE = -1\nvar:        .word 1\n.text\nmain:\nlw $t0, var\nadd $t1, $t0, VALUE\nadd $t2, $t1, $t0&quot;;</span>
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     174 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     175 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     176 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     177 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     178 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     179 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     180 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t0&quot;)) == 1);</span>
+<span class="lineNum">     181 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$t1&quot;)) == 0);</span>
+<span class="lineNum">     182 </span>            :         }
+<span class="lineNum">     183 </span>            :         {
+<span class="lineNum">     184 </span>            :                 //6
+<span class="lineNum">     185 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     186 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     187 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nVALUE = 12\nvar:        .word 31\n.text\nmain:\nlw $t0, var\n   addu $t1, $t0, VALUE # 31 + 12 = 43\naddu $t2, $t1, $t0 # 43 + 31 = 74\n&quot;;</span>
+<span class="lineNum">     188 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     189 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     190 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     191 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     192 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     193 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span>            :         }
+<span class="lineNum">     196 </span>            :         {
+<span class="lineNum">     197 </span>            :                 //7
+<span class="lineNum">     198 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     199 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     200 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nVALUE = 2\nvar1:        .word 1\nvar2: .word 12\nvar3: .word -1\n.text\nmain:\nlw $t0, var1\nlw $t1, var2\nlw $t2, var3\nsub $t3, $t0, VALUE # 1 -2 = -1\nsub $t4, $t1, $t0 # 12 -1 = 11\n      sub $t5, $t2, VALUE #  -1 -2 = -3 \n&quot;;</span>
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     203 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     204 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     205 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     206 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     207 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     208 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     209 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     210 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 5);</span>
+<span class="lineNum">     211 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 6);</span>
+<span class="lineNum">     212 </span>            :         }
+<span class="lineNum">     213 </span>            :         {
+<span class="lineNum">     214 </span>            :                 //8
+<span class="lineNum">     215 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     216 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     217 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nVALUE = 2\nvar1:        .word 1\nvar2: .word 12\nvar3: .word -1\n.text\nmain:\nlw $t0, var1\n   lw $t1, var2\n  lw $t2, var3\n  subu $t3, $t0, VALUE # 1 -2 = -1 = 4294967295\nsubu $t4, $t1, $t0 # 12 -1 = 11\n        subu $t5, $t2, VALUE #  -1 -2 = -3 = 4294967293\n&quot;;</span>
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true); \</span>
+<span class="lineNum">     220 </span><span class="lineCov">          9 :                         REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     221 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     222 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     223 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     224 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     225 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     226 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     227 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 5);</span>
+<span class="lineNum">     228 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 6);</span>
+<span class="lineNum">     229 </span>            :         }
+<span class="lineNum">     230 </span>            :         {
+<span class="lineNum">     231 </span>            :                 //9
+<span class="lineNum">     232 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     233 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     234 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\n        VALUE = 4\n     VALUE2 = -4\nvar1: .word 2\nvar2: .word -2\nvar3: .word 1073741824 #  = 2 ^ 30\n.text\nmain:\nlw $t0, var1\nli $t1, VALUE\nmult $t0, $t1 # 2 * 4 = 8\nmflo $t8\nmfhi $t9\n                      lw $t0, var2\n  lw $t1, var1\n  mult $t0, $t1 #  -2 * 2 = -4\n  mflo $t8\n      mfhi $t9\n      lw $t0, var3\nli $t1, VALUE\n   mult $t0, $t1 # 1073741824 * 4 = 4294967296 (overflow)\nmflo $t8\nmfhi $t9\nlw $t0, var3\nli $t1, VALUE2\n      mult $t0, $t1 # 1073741824 * -4 = -4294967296 (overflow)\nmflo $t8\nmfhi $t9\n&quot;;</span>
+<span class="lineNum">     235 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     236 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     237 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     238 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     239 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     240 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     241 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     242 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     243 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 5);</span>
+<span class="lineNum">     244 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 6);</span>
+<span class="lineNum">     245 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 7);</span>
+<span class="lineNum">     246 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 8);</span>
+<span class="lineNum">     247 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 9);</span>
+<span class="lineNum">     248 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 10);</span>
+<span class="lineNum">     249 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 11);</span>
+<span class="lineNum">     250 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 12);</span>
+<span class="lineNum">     251 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 13);</span>
+<span class="lineNum">     252 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 14);</span>
+<span class="lineNum">     253 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 15);</span>
+<span class="lineNum">     254 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 16);</span>
+<span class="lineNum">     255 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 17);</span>
+<span class="lineNum">     256 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 18);</span>
+<span class="lineNum">     257 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 19);</span>
+<span class="lineNum">     258 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 20);</span>
+<span class="lineNum">     259 </span>            :         }
+<span class="lineNum">     260 </span>            :         {
+<span class="lineNum">     261 </span>            :                 //10
+<span class="lineNum">     262 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     263 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     264 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nVALUE = 4\nvar1: .word 2\nvar2: .word 1073741824 #  = 2 ^ 30\n.text\n   main:\n lw $t0, var1\nli $t1, VALUE\nmult $t0, $t1 # 2 * 4 = 8\nmflo $t8\nmfhi $t9\nlw $t0, var2\nli $t1, VALUE\nmultu $t0, $t1 # 1073741824 * 4 = 4294967296 (overflow)\nmflo $t8\nmfhi $t9\n&quot;;</span>
+<span class="lineNum">     265 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     266 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     267 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     268 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     269 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     270 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     271 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     272 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     273 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 5);</span>
+<span class="lineNum">     274 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 6);</span>
+<span class="lineNum">     275 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 7);</span>
+<span class="lineNum">     276 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 8);</span>
+<span class="lineNum">     277 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 9);</span>
+<span class="lineNum">     278 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 10);</span>
+<span class="lineNum">     279 </span>            :         }
+<span class="lineNum">     280 </span>            :         {
+<span class="lineNum">     281 </span>            :                 //11
+<span class="lineNum">     282 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     283 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     284 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nVALUE = 4\nVALUE2 = -4\nvar1:   .word 2\nvar2: .word -2\nvar3: .word 1073741824 #  = 2 ^ 30\n.text\nmain:\nlw $t0, var1\nli $t1, VALUE\ndiv $t0, $t1 # 2 / 4 = 0 rem 2\nmflo $t8\nmfhi $t9\nlw $t0, var2\nlw $t1, var1\ndivu $t0, $t1 #  -2 / 2 = -1 rem 0\nmflo $t8\nmfhi $t9\nlw $t0, var3\nli $t1, VALUE\ndiv $t0, $t1 # 1073741824 / 4 = 268435456 rem 0\nmflo $t8\nmfhi $t9\nlw $t0, var3\n        li $t1, VALUE2\ndiv $t0, $t1 # 1073741824 / -4 = -268435456 rem 0\n     mflo $t8\n      mfhi $t9\n      # divide by 0\n div $t0, $0\n&quot;;</span>
+<span class="lineNum">     285 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     286 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     287 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     288 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     289 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     290 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     291 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     292 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     293 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     294 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 5);</span>
+<span class="lineNum">     295 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 6);</span>
+<span class="lineNum">     296 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 7);</span>
+<span class="lineNum">     297 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 8);</span>
+<span class="lineNum">     298 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 9);</span>
+<span class="lineNum">     299 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 10);</span>
+<span class="lineNum">     300 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 11);</span>
+<span class="lineNum">     301 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 12);</span>
+<span class="lineNum">     302 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 13);</span>
+<span class="lineNum">     303 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 14);</span>
+<span class="lineNum">     304 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 15);</span>
+<span class="lineNum">     305 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 16);</span>
+<span class="lineNum">     306 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 17);</span>
+<span class="lineNum">     307 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 18);</span>
+<span class="lineNum">     308 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 19);</span>
+<span class="lineNum">     309 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 20);</span>
+<span class="lineNum">     310 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 20);</span>
+<span class="lineNum">     311 </span>            :         }
+<span class="lineNum">     312 </span>            :         {
+<span class="lineNum">     313 </span>            :                 //12
+<span class="lineNum">     314 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     315 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     316 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nVALUE = 4\nvar1: .word 2\nvar2: .word 1073741825 #  = 2 ^ 30 + 1\n.text\n       main:\nlw $t0, var1\nli $t1, VALUE\ndiv $t0, $t1 # 2 / 4 = 0 rem 2\nmflo $t8\nmfhi $t9\nlw $t0, var2\nli $t1, VALUE\ndiv $t0, $t1 # 1073741825 / 4 = 268435456 rem 1\nmflo $t8\nmfhi $t9\n# divide by 0\ndiv $t0, $0\n&quot;;</span>
+<span class="lineNum">     317 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     318 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     319 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     320 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     321 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     322 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     323 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     324 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     325 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     326 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 5);</span>
+<span class="lineNum">     327 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 6);</span>
+<span class="lineNum">     328 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 7);</span>
+<span class="lineNum">     329 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 8);</span>
+<span class="lineNum">     330 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 9);</span>
+<span class="lineNum">     331 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 10);</span>
+<span class="lineNum">     332 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 10);</span>
+<span class="lineNum">     333 </span>            :         }
+<span class="lineNum">     334 </span>            :         {
+<span class="lineNum">     335 </span>            :                 //13
+<span class="lineNum">     336 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     337 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     338 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nVALUE = 3\nvar1:        .word 12\nvar2: .word 10\n.text\nmain:\nlw $t0, var1\nlw $t1, var2\nand $t2, $t0, $t1\nand $t2, $t0, VALUE\n&quot;;</span>
+<span class="lineNum">     339 </span>            : 
+<span class="lineNum">     340 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     341 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     342 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     343 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     344 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     345 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     346 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     347 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     348 </span>            :         }
+<span class="lineNum">     349 </span>            :         {
+<span class="lineNum">     350 </span>            :                 //14
+<span class="lineNum">     351 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     352 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     353 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nVALUE = 3\nvar1:        .word 12\nvar2: .word 10\n.text\nmain:\nlw $t0, var1\nlw $t1, var2\nnor $t2, $t0, $t1\nnor $t2, $t0, VALUE\n&quot;;</span>
+<span class="lineNum">     354 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     355 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     356 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     357 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     358 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     359 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     360 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     361 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     362 </span>            :         }
+<span class="lineNum">     363 </span>            :         {
+<span class="lineNum">     364 </span>            :                 //15
+<span class="lineNum">     365 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     366 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     367 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nVALUE = 3\nvar1:        .word 12\nvar2: .word 10\n.text\nmain:\nlw $t0, var1\nlw $t1, var2\nor $t2, $t0, $t1\nor $t2, $t0, VALUE\n\n&quot;;</span>
+<span class="lineNum">     368 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     369 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     370 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     371 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     372 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     373 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     374 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     375 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     376 </span>            :         }
+<span class="lineNum">     377 </span>            :         {
+<span class="lineNum">     378 </span>            :                 //16
+<span class="lineNum">     379 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     380 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     381 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nVALUE = 3\nvar1:        .word 12\nvar2: .word 10\n.text\nmain:\nlw $t0, var1\nlw $t1, var2\nxor $t2, $t0, $t1\nxor $t2, $t0, VALUE\n&quot;;</span>
+<span class="lineNum">     382 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     383 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     384 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     385 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     386 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     387 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     388 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     389 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     390 </span>            :         }
+<span class="lineNum">     391 </span>            :         {
+<span class="lineNum">     392 </span>            :                 //17
+<span class="lineNum">     393 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     394 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     395 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nVALUE = 3\nvar1:        .word 12\nvar2: .word 10\n      .text\n main:\nlw $t0, var1\nlw $t1, var2\nnot $t2, $t0\nnot $t2, $t1\nnot $t2, VALUE\n&quot;;</span>
+<span class="lineNum">     396 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     397 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     398 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     399 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     400 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     401 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     402 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     403 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     404 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 5);</span>
+<span class="lineNum">     405 </span>            :         }
+<span class="lineNum">     406 </span>            :         {
+<span class="lineNum">     407 </span>            :                 //18
+<span class="lineNum">     408 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     409 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     410 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\n.text\nmain:    nop\nj next\nnop\nnext:\nnop\nj main\n&quot;;</span>
+<span class="lineNum">     411 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     412 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     413 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     414 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     415 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     416 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     417 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     418 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 0);</span>
+<span class="lineNum">     419 </span>            :         }
+<span class="lineNum">     420 </span>            :         {
+<span class="lineNum">     421 </span>            :                 //19
+<span class="lineNum">     422 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     423 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     424 </span><span class="lineCov">         18 :                 std::string temp = &quot;.data\nvar0:   .word 0\nvar1: .word 1\nvar2: .word 2\nvar3: .word 3\n.text\nmain:\nlw $t0, var0\nlw $t1, var1\nlw $t2, var2\nlw $t3, var3\nbeq $t0, $t1, check1\nbeq $t0, $t0, check1\nnop\ncheck1:\n  bne $t0, $t0, check2\n  bne $t0, $t1, check2\nnop\ncheck2:\nbgt $t0, $t0, check3\nbgt $t3, $t1, check3\nnop\ncheck3:\nbge $t0, $t1, check4\nbge $t3, $t2, check4\nnop\ncheck4:\nblt $t3, $t1, check5\nblt $t1, $t3, check5\nnop\ncheck5:\nble $t3, $t1, check6\nble $t3, $t3, check6\nnop\ncheck6:\nnop\nj check6\n&quot;;</span>
+<span class="lineNum">     425 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     426 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     427 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     428 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     429 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     430 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 2);</span>
+<span class="lineNum">     431 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 3);</span>
+<span class="lineNum">     432 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 4);</span>
+<span class="lineNum">     433 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 5);</span>
+<span class="lineNum">     434 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 7);</span>
+<span class="lineNum">     435 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 8);</span>
+<span class="lineNum">     436 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 10);</span>
+<span class="lineNum">     437 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 11);</span>
+<span class="lineNum">     438 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 13);</span>
+<span class="lineNum">     439 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 14);</span>
+<span class="lineNum">     440 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 16);</span>
+<span class="lineNum">     441 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 17);</span>
+<span class="lineNum">     442 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 19);</span>
+<span class="lineNum">     443 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 20);</span>
+<span class="lineNum">     444 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 22);</span>
+<span class="lineNum">     445 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 23);</span>
+<span class="lineNum">     446 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 22);</span>
+<span class="lineNum">     447 </span><span class="lineCov">         18 :                 std::string bad = &quot;????????????&quot;;</span>
+<span class="lineNum">     448 </span><span class="lineCov">          9 :                 REQUIRE((parser.parse(bad)) == true);</span>
+<span class="lineNum">     449 </span><span class="lineCov">          9 :                 bad = &quot;&quot;;</span>
+<span class="lineNum">     450 </span><span class="lineCov">          9 :                 REQUIRE((parser.parse(bad)) == false);</span>
+<span class="lineNum">     451 </span><span class="lineCov">          9 :                 REQUIRE((parser.parse_file(&quot;testLoop.txt&quot;)) == false);</span>
+<span class="lineNum">     452 </span>            : 
+<span class="lineNum">     453 </span>            :         }
+<span class="lineNum">     454 </span>            :         {
+<span class="lineNum">     455 </span>            :                 //20
+<span class="lineNum">     456 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     457 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     458 </span><span class="lineCov">         18 :                 std::string temp = &quot;       # Example program to compute the sum of squares from Jorgensen [2016]\n#---------------------------------------------------------------\n# data declarations\n.data\nn: .word 10\nsumOfSquares: .word 0\n#---------------------------------------------------------------\n# the program\n      .text\nmain:\nlw $t0, n\nli $t1, 1\nli $t2, 0\nsumLoop:\nmult $t1, $t1\nmflo $t3\nadd $t2, $t2, $t3\nadd $t1, $t1, 1\nble $t1, $t0, sumLoop\nsw  $t2, sumOfSquares\nend: \nj end\n\n&quot;;</span>
+<span class="lineNum">     459 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse(temp) == true);</span>
+<span class="lineNum">     460 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;check_Main()) == true);</span>
+<span class="lineNum">     461 </span><span class="lineCov">          9 :                 vm-&gt;setInitialPc();</span>
+<span class="lineNum">     462 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;print_reg(&quot;$pc&quot;)) == 0);</span>
+<span class="lineNum">     463 </span><span class="lineCov">          9 :                 REQUIRE((vm-&gt;step()) == 1);</span>
+<span class="lineNum">     464 </span>            : 
+<span class="lineNum">     465 </span><span class="lineCov">         18 :                 std::string nomain = &quot;# Example program to compute the sum of squares from Jorgensen[2016]\n#-------------------------------------------------------------- - \n# data declarations\n.data\nn:.word 10\nsumOfSquares : .word 0\n#-------------------------------------------------------------- - \n# the program\n.text\n lw $t0, n\nli $t1, 1\nli $t2, 0\nsumLoop:\nmult $t1, $t1\nmflo $t3\nadd $t2, $t2, $t3\nadd $t1, $t1, 1\nble $t1, $t0, sumLoop\nsw  $t2, sumOfSquares\nend: \nj end\n\n&quot;;</span>
+<span class="lineNum">     466 </span><span class="lineCov">          9 :                 parser.parse(nomain);</span>
+<span class="lineNum">     467 </span><span class="lineCov">          9 :                 nomain = parser.get_error();</span>
+<span class="lineNum">     468 </span><span class="lineCov">          9 :                 vm-&gt;check_Main();</span>
+<span class="lineNum">     469 </span><span class="lineCov">          9 :                 vm-&gt;get_labelmap();</span>
+<span class="lineNum">     470 </span><span class="lineCov">          9 :                 vm-&gt;store_word(5, 600);</span>
+<span class="lineNum">     471 </span><span class="lineCov">          9 :                 vm-&gt;setMem(600);</span>
+<span class="lineNum">     472 </span><span class="lineCov">          9 :                 vm-&gt;read(&quot;(4)&quot;);</span>
+<span class="lineNum">     473 </span><span class="lineCov">          9 :                 vm-&gt;write_reg(&quot;345345&quot;, 4);</span>
+<span class="lineNum">     474 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$zero&quot;);</span>
+<span class="lineNum">     475 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$at&quot;);</span>
+<span class="lineNum">     476 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$v0&quot;);</span>
+<span class="lineNum">     477 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$fp&quot;);</span>
+<span class="lineNum">     478 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$ra&quot;);</span>
+<span class="lineNum">     479 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$v1&quot;);</span>
+<span class="lineNum">     480 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$v2&quot;);</span>
+<span class="lineNum">     481 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$v3&quot;);</span>
+<span class="lineNum">     482 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$v4&quot;);</span>
+<span class="lineNum">     483 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$a0&quot;);</span>
+<span class="lineNum">     484 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$a1&quot;);</span>
+<span class="lineNum">     485 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$a2&quot;);</span>
+<span class="lineNum">     486 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$a3&quot;);</span>
+<span class="lineNum">     487 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$t0&quot;);</span>
+<span class="lineNum">     488 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$t1&quot;);</span>
+<span class="lineNum">     489 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$t2&quot;);</span>
+<span class="lineNum">     490 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$s0&quot;);</span>
+<span class="lineNum">     491 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$t3&quot;);</span>
+<span class="lineNum">     492 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$t4&quot;);</span>
+<span class="lineNum">     493 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$t5&quot;);</span>
+<span class="lineNum">     494 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$t6&quot;);</span>
+<span class="lineNum">     495 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$t7&quot;);</span>
+<span class="lineNum">     496 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$t8&quot;);</span>
+<span class="lineNum">     497 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$k0&quot;);</span>
+<span class="lineNum">     498 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$k1&quot;);</span>
+<span class="lineNum">     499 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$sp&quot;);</span>
+<span class="lineNum">     500 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$gp&quot;);</span>
+<span class="lineNum">     501 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$hi&quot;);</span>
+<span class="lineNum">     502 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$lo&quot;);</span>
+<span class="lineNum">     503 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$pc&quot;);</span>
+<span class="lineNum">     504 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$t9&quot;);</span>
+<span class="lineNum">     505 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$s4&quot;);</span>
+<span class="lineNum">     506 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$s5&quot;);</span>
+<span class="lineNum">     507 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$s6&quot;);</span>
+<span class="lineNum">     508 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$s7&quot;);</span>
+<span class="lineNum">     509 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$s1&quot;);</span>
+<span class="lineNum">     510 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$s2&quot;);</span>
+<span class="lineNum">     511 </span><span class="lineCov">          9 :                 vm-&gt;find_regpair(&quot;$s3&quot;);</span>
+<span class="lineNum">     512 </span>            : 
+<span class="lineNum">     513 </span><span class="lineCov">         18 :                 std::vector&lt;std::string&gt; curInstr;</span>
+<span class="lineNum">     514 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;multu&quot;);</span>
+<span class="lineNum">     515 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     516 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     517 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     518 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     519 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;divu&quot;);</span>
+<span class="lineNum">     520 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     521 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     522 </span>            : 
+<span class="lineNum">     523 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     524 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     525 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;addu&quot;);</span>
+<span class="lineNum">     526 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2222&quot;);</span>
+<span class="lineNum">     527 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     528 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     529 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     530 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     531 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;addu&quot;);</span>
+<span class="lineNum">     532 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     533 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t332324&quot;);</span>
+<span class="lineNum">     534 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     535 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     536 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     537 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;sub&quot;);</span>
+<span class="lineNum">     538 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t22222&quot;);</span>
+<span class="lineNum">     539 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     540 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     541 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     542 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     543 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;subu&quot;);</span>
+<span class="lineNum">     544 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2232&quot;);</span>
+<span class="lineNum">     545 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     546 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     547 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     548 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     549 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;subu&quot;);</span>
+<span class="lineNum">     550 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     551 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t244323&quot;);</span>
+<span class="lineNum">     552 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     553 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     554 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     555 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;and&quot;);</span>
+<span class="lineNum">     556 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2234234&quot;);</span>
+<span class="lineNum">     557 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     558 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     559 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     560 </span>            : 
+<span class="lineNum">     561 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     562 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;or&quot;);</span>
+<span class="lineNum">     563 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2234234&quot;);</span>
+<span class="lineNum">     564 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     565 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     566 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     567 </span>            :                 
+<span class="lineNum">     568 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     569 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;xor&quot;);</span>
+<span class="lineNum">     570 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2234234&quot;);</span>
+<span class="lineNum">     571 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     572 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     573 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     574 </span>            : 
+<span class="lineNum">     575 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     576 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;nor&quot;);</span>
+<span class="lineNum">     577 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2234234&quot;);</span>
+<span class="lineNum">     578 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     579 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     580 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     581 </span>            : 
+<span class="lineNum">     582 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     583 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;not&quot;);</span>
+<span class="lineNum">     584 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2234234&quot;);</span>
+<span class="lineNum">     585 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     586 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     587 </span>            : 
+<span class="lineNum">     588 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     589 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;lw&quot;);</span>
+<span class="lineNum">     590 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     591 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     592 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;($t2)&quot;);</span>
+<span class="lineNum">     593 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     594 </span>            : 
+<span class="lineNum">     595 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     596 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;lw&quot;);</span>
+<span class="lineNum">     597 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3242342&quot;);</span>
+<span class="lineNum">     598 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     599 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;($t2)&quot;);</span>
+<span class="lineNum">     600 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     601 </span>            : 
+<span class="lineNum">     602 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     603 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;li&quot;);</span>
+<span class="lineNum">     604 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t232342&quot;);</span>
+<span class="lineNum">     605 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     606 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     607 </span>            : 
+<span class="lineNum">     608 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     609 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;la&quot;);</span>
+<span class="lineNum">     610 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     611 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;($t2)&quot;);</span>
+<span class="lineNum">     612 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     613 </span>            : 
+<span class="lineNum">     614 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     615 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;la&quot;);</span>
+<span class="lineNum">     616 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     617 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;2($t2)&quot;);</span>
+<span class="lineNum">     618 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     619 </span>            : 
+<span class="lineNum">     620 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     621 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;la&quot;);</span>
+<span class="lineNum">     622 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t9993&quot;);</span>
+<span class="lineNum">     623 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;($t2)&quot;);</span>
+<span class="lineNum">     624 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     625 </span>            : 
+<span class="lineNum">     626 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     627 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;sw&quot;);</span>
+<span class="lineNum">     628 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     629 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;($t2)&quot;);</span>
+<span class="lineNum">     630 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     631 </span>            : 
+<span class="lineNum">     632 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     633 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;move&quot;);</span>
+<span class="lineNum">     634 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3423&quot;);</span>
+<span class="lineNum">     635 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t2&quot;);</span>
+<span class="lineNum">     636 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     637 </span>            : 
+<span class="lineNum">     638 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     639 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;nothing&quot;);</span>
+<span class="lineNum">     640 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     641 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     642 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;($t2)&quot;);</span>
+<span class="lineNum">     643 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     644 </span>            : 
+<span class="lineNum">     645 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     646 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;add&quot;);</span>
+<span class="lineNum">     647 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t234233&quot;);</span>
+<span class="lineNum">     648 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     649 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;($t2)&quot;);</span>
+<span class="lineNum">     650 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     651 </span>            : 
+<span class="lineNum">     652 </span><span class="lineCov">          9 :                 curInstr.clear();;</span>
+<span class="lineNum">     653 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;addu&quot;);</span>
+<span class="lineNum">     654 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t234233&quot;);</span>
+<span class="lineNum">     655 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;$t3&quot;);</span>
+<span class="lineNum">     656 </span><span class="lineCov">          9 :                 curInstr.emplace_back(&quot;($t2)&quot;);</span>
+<span class="lineNum">     657 </span><span class="lineCov">          9 :                 vm-&gt;exec(curInstr);</span>
+<span class="lineNum">     658 </span>            : 
+<span class="lineNum">     659 </span>            :                 
+<span class="lineNum">     660 </span>            : 
+<span class="lineNum">     661 </span><span class="lineCov">          9 :                 vm-&gt;add(4294967294, 4294967294);</span>
+<span class="lineNum">     662 </span><span class="lineCov">          9 :                 vm-&gt;add(-42949674, -429496794);</span>
+<span class="lineNum">     663 </span>            : 
+<span class="lineNum">     664 </span>            : 
+<span class="lineNum">     665 </span>            : 
+<span class="lineNum">     666 </span>            : 
+<span class="lineNum">     667 </span>            : 
+<span class="lineNum">     668 </span>            : 
+<span class="lineNum">     669 </span>            : 
+<span class="lineNum">     670 </span>            : 
+<span class="lineNum">     671 </span>            : 
+<span class="lineNum">     672 </span>            :                 
+<span class="lineNum">     673 </span>            : 
+<span class="lineNum">     674 </span>            :         }
+<span class="lineNum">     675 </span>            :         {
+<span class="lineNum">     676 </span><span class="lineCov">         18 :                 Parser parser;</span>
+<span class="lineNum">     677 </span><span class="lineCov">          9 :                 VirtualMachine *vm = parser.getVm();</span>
+<span class="lineNum">     678 </span><span class="lineCov">          9 :                 REQUIRE(parser.parse_file(TEST_FILE_DIR + &quot;/vm/test01.asm&quot;) == true);</span>
+<a name="679"><span class="lineNum">     679 </span>            :         }</a>
+<span class="lineNum">     680 </span>            : 
+<span class="lineNum">     681 </span><span class="lineCov">         36 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.12</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
